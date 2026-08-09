@@ -887,13 +887,18 @@
 	#size-cells = <0>;
 
 	pressure@1 {
-		spi-max-frequency = <50000000>;
+		/*
+		 * ST LPS22DF: fc(SPC) max 10 MHz; the datasheet recommends
+		 * limiting the SPI clock to 8 MHz for ODR <= 50 Hz.
+		 */
+		spi-max-frequency = <8000000>;
 		reg = <1>;
 		compatible = "bosch,bmp390-spidev";
 	};
 
 	imu@3 {
-		spi-max-frequency = <50000000>;
+		/* InvenSense ICM-20948: fSCLK max 7 MHz (DS-000189 Table 8) */
+		spi-max-frequency = <7000000>;
 		reg = <3>;
 		compatible = "invensense,icm20948-spidev";
 	};
