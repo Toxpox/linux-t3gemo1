@@ -2,6 +2,19 @@
 /*
  * DT Overlay to configure fan as GPIO controlled (on-off) instead of PWM controlled (varying speeds).
  *
+ * WARNING: this takes over HAT pin 40 (ball B25, pad 0x019C, GPIO1_9). That pad
+ * backs the whole hat_40_* group family in the pinmux, so pin 40 is no longer
+ * available to the header while this overlay is loaded. Nothing in the tree
+ * references hat_40_*, so the takeover produces no warning at DT or runtime.
+ *
+ * NOTE: the base DTS drives the fan from a different ball (F26, pad 0x0124,
+ * EHRPWM2_A). Verify that B25 is routed to the fan control input on the target
+ * board revision before deploying this overlay.
+ *
+ * NOTE: FAN_TACH (pad 0x01d0) is deliberately left unclaimed. The gpio-fan
+ * binding exposes it through alarm-gpios, but the signal polarity has not been
+ * confirmed for this board revision.
+ *
  * Copyright (C) 2025 T3 Foundation - https://www.t3vakfi.org/
  */
 /dts-v1/;
@@ -26,21 +39,25 @@
         };
     };
 
+    /*
+     * Use a node name of its own instead of reusing the base node name
+     * "cooling_fan": an overlay node with the same path merges into the base
+     * node and inherits every property the overlay does not override
+     * (cooling-levels, pwms, pulses-per-revolution - all pwm-fan specific and
+     * unread by gpio-fan.c). /delete-property/ cannot be used to drop them:
+     * the DT overlay format has no way to express deletion of a base property.
+     * So the base pwm-fan node is disabled in fragment@4 instead.
+     */
     fragment@1 {
         target-path = "/";
         __overlay__ {
-            fan: cooling_fan {
+            gpio_fan: gpio-fan {
                 compatible = "gpio-fan";
                 pinctrl-names = "default";
                 pinctrl-0 = <&gpio_fan_pins>;
-                fan-supply = <&vsys_5v0>;
                 gpios = <&main_gpio1 9 GPIO_ACTIVE_HIGH>;
                 gpio-fan,speed-map = <0 0>, <1 1>;
                 #cooling-cells = <2>;
-                cooling-min-state = <0>;
-                cooling-max-state = <1>;
-                interrupt-parent = <&main_gpio1>;
-                interrupts = <22 IRQ_TYPE_EDGE_FALLING>;
                 status = "okay";
             };
         };
@@ -52,9 +69,27 @@
             gpio_fan_pins: gpio-fan-pins {
                 pinctrl-single,pins = <
                     J722S_IOPAD(0x019C, PIN_OUTPUT, 7) /* (B25) MCASP0_AXR1 FAN_GPIO */
-                    J722S_IOPAD(0x01d0, PIN_INPUT, 7)  /* (E22) UART0_CTSn.GPIO1_22 FAN_TACH */
                 >;
             };
+        };
+    };
+
+    /* Turn off the base pwm-fan node, it drives the same physical fan. */
+    fragment@4 {
+        target = <&fan>;
+        __overlay__ {
+            status = "disabled";
+        };
+    };
+
+    /*
+     * epwm2 exists only to feed the pwm-fan node above. Without this the
+     * PWM chip stays registered with no consumer and no pinmux.
+     */
+    fragment@5 {
+        target = <&epwm2>;
+        __overlay__ {
+            status = "disabled";
         };
     };
 
@@ -64,17 +99,17 @@
             cooling-maps {
                 map1 {
                     trip = <&main0_active0>;
-                    cooling-device = <&fan 1 1>;
+                    cooling-device = <&gpio_fan 1 1>;
                 };
 
                 map2 {
                     trip = <&main0_active1>;
-                    cooling-device = <&fan 1 1>;
+                    cooling-device = <&gpio_fan 1 1>;
                 };
 
                 map3 {
                     trip = <&main0_active2>;
-                    cooling-device = <&fan 1 1>;
+                    cooling-device = <&gpio_fan 1 1>;
                 };
             };
         };
