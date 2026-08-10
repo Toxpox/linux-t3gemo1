@@ -712,6 +712,7 @@
 &mcu_gpio0 {
 	status = "okay";
 	pinctrl-names = "default";
+	pinctrl-0 = <&mcu_gpio0_pins_default>;
 	gpio-line-names = "GPIO8", "", "GPIO11", "GPIO10", "GPIO9", /* 0-4 */
 			  "", "", "GPIO23", "", "GPIO7", /* 5-9 */
 			  "GPIO24", "HDMI_RSTn", "IMU_EN", "", "HDMI_INTn", /* 10-14 */
@@ -854,13 +855,14 @@
 		bootph-all;
 	};
 
-	mcu_oldi_backlight_default_pins: mcu-backlight-default-pins {
-		pinctrl-single,pins = <
-			J722S_MCU_IOPAD(0x002c, PIN_OUTPUT, 7) /* (C4) WKUP_UART0_CTSn.MCU_GPIO0_11 */
-		>;
-	};
-
-	mcu_oldi_touchscreen_default_pins: mcu-touchscreen-default-pins {
+	/*
+	 * MCU_GPIO0_12 drives IMU_EN for the ICM-20948. The pad is claimed by
+	 * the GPIO controller itself so that the mcu_gpio0_12 hog can drive it
+	 * at gpiochip registration time, rather than depending on mcu_spi0
+	 * probing first. The pinctrl core rejects a second claim on the same
+	 * pad, so it must live in exactly one group.
+	 */
+	mcu_gpio0_pins_default: mcu-gpio0-default-pins {
 		pinctrl-single,pins = <
 			J722S_MCU_IOPAD(0x0030, PIN_OUTPUT, 7) /* (C3) WKUP_UART0_RTSn.MCU_GPIO0_12 */
 		>;
@@ -873,7 +875,6 @@
 			J722S_MCU_IOPAD(0x0008, PIN_OUTPUT, 0) /* (A9) MCU_SPI0_CLK */
 			J722S_MCU_IOPAD(0x000c, PIN_OUTPUT, 0) /* (B12) MCU_SPI0_D0 */
 			J722S_MCU_IOPAD(0x0010, PIN_INPUT, 0)  /* (C11) MCU_SPI0_D1 */
-			J722S_MCU_IOPAD(0x0030, PIN_OUTPUT, 7) /* (C3) WKUP_UART0_RTSn.MCU_GPIO0_12 */
 		>;
 		bootph-all;
 	};

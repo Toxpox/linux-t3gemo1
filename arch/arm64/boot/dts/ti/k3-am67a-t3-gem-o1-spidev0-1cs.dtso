@@ -29,7 +29,12 @@
 			J722S_MCU_IOPAD(0x0008, PIN_OUTPUT, 0) /* (A9) MCU_SPI0_CLK */
 			J722S_MCU_IOPAD(0x000c, PIN_OUTPUT, 0) /* (B12) MCU_SPI0_D0 */
 			J722S_MCU_IOPAD(0x0010, PIN_INPUT, 0)  /* (C11) MCU_SPI0_D1 */
-			J722S_MCU_IOPAD(0x0030, PIN_OUTPUT, 7) /* (C3) WKUP_UART0_RTSn.MCU_GPIO0_12 */
+			/*
+			 * MCU_GPIO0_12 (IMU_EN, pad 0x0030) is deliberately not
+			 * listed here: it belongs to mcu_gpio0_pins_default in the
+			 * base DTS. Claiming it from a second device makes the
+			 * pinctrl core reject mcu_spi0 with -EBUSY.
+			 */
 		>;
 		bootph-all;
 	};
