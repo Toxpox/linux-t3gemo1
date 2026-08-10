@@ -14,10 +14,14 @@ properties:
     pattern: "^can-phy"
 
   compatible:
-    enum:
-      - nxp,tjr1443
-      - ti,tcan1042
-      - ti,tcan1043
+    oneOf:
+      - enum:
+          - nxp,tjr1443
+          - ti,tcan1042
+          - ti,tcan1043
+      - items:
+          - const: ti,tcan1462
+          - const: ti,tcan1042
 
   '#phy-cells':
     const: 0
