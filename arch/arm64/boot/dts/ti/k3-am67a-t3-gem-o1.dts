@@ -753,6 +753,7 @@
 	bluetooth {
 		compatible = "realtek,rtl8822cs-bt";
 		enable-gpios = <&main_gpio0 3 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
 		pinctrl-0 = <&bt_en_pins_default>;
 	};
 };
