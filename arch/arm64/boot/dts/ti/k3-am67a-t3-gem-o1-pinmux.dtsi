@@ -148,7 +148,12 @@
 		>;
 	};
 
-	/* USED by BLE */
+	/*
+	 * Free for HAT use. The onboard BLE does NOT sit on these pads: it uses
+	 * main_uart6_pins_default (OSPI0_D4..D7) in the board DTS. Selecting this
+	 * group routes UART6 to the header instead, which is what
+	 * k3-am67a-t3-gem-o1-uart-ttys6.dtso does - and that disables Bluetooth.
+	 */
 	hat_11_uart6_txd: hat-11-uart6-txd-pins {
 		pinctrl-single,pins = <
 			J722S_IOPAD(0x198, PIN_OUTPUT, 3) /* (A26) MCASP0_AXR2.UART6_TXD */
@@ -461,7 +466,11 @@
 		>;
 	};
 
-	/* USED by BLE */
+	/*
+	 * Free for HAT use. The onboard BLE does NOT sit on these pads: it uses
+	 * main_uart6_pins_default (OSPI0_D4..D7) in the board DTS. This group is
+	 * currently referenced by nothing in the tree.
+	 */
 	hat_36_uart6_rxd: hat-36-uart6-rxd-pins {
 		pinctrl-single,pins = <
 			J722S_IOPAD(0x194, PIN_INPUT, 3) /* (A25) MCASP0_AXR3.UART6_RXD */

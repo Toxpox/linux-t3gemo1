@@ -396,6 +396,17 @@
 		bootph-all;
 	};
 
+	/*
+	 * NOT ACTIVE. &ospi0 is disabled and nothing references this group. Eight
+	 * of its pads are already owned by active groups, so wiring it up without
+	 * releasing them first breaks five subsystems at once:
+	 *   0x0008 -> mipi_switch pins       (MIPI switch)
+	 *   0x000c -> bt_en_pins_default     (Bluetooth enable)
+	 *   0x0010 -> wifi_en                (Wi-Fi enable)
+	 *   0x001c/0x0020/0x0024/0x0028 -> main_uart6_pins_default (BLE / UART6)
+	 *   0x002c -> leds_system            (system LED)
+	 * pinmux_request_pin() rejects the second claimant with -EBUSY.
+	 */
 	ospi0_pins_default: ospi0-default-pins {
 		pinctrl-single,pins = <
 			J722S_IOPAD(0x0000, PIN_OUTPUT, 0) /* (P23) OSPI0_CLK */
@@ -450,7 +461,7 @@
 			J722S_IOPAD(0x00ec, PIN_OUTPUT, 0) /* (AA22) VOUT0_DATA13 */
 			J722S_IOPAD(0x00f0, PIN_OUTPUT, 0) /* (AB26) VOUT0_DATA14 */
 			J722S_IOPAD(0x00f4, PIN_OUTPUT, 0) /* (AB27) VOUT0_DATA15 */
-			J722S_IOPAD(0x005c, PIN_OUTPUT, 1) /* (AC25) GPMC0_AD8.VOUT0_DATA16 */
+			J722S_IOPAD(0x005c, PIN_OUTPUT, 1) /* (U27) GPMC0_AD8.VOUT0_DATA16 */
 			J722S_IOPAD(0x0060, PIN_OUTPUT, 1) /* (U26) GPMC0_AD9.VOUT0_DATA17 */
 			J722S_IOPAD(0x0064, PIN_OUTPUT, 1) /* (V27) GPMC0_AD10.VOUT0_DATA18 */
 			J722S_IOPAD(0x0068, PIN_OUTPUT, 1) /* (V25) GPMC0_AD11.VOUT0_DATA19 */
@@ -779,6 +790,10 @@
 		>;
 	};
 
+	/*
+	 * Unreferenced in the base DTS on purpose: this group is consumed only by
+	 * k3-am67a-t3-gem-o1-csi0-imx219.dtso. Do not delete it as dead code.
+	 */
 	csi0_gpio_pins_default: csi0-gpio-default-pins {
 		pinctrl-single,pins = <
 			J722S_MCU_IOPAD(0x003c, PIN_OUTPUT, 7) /* (C1) MCU_MCAN1_TX.MCU_GPIO0_15 */
