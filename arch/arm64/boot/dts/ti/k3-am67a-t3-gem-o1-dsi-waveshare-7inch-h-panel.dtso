@@ -39,7 +39,7 @@
 	status = "okay";
 };
 
-&mcu_i2c0 {
+&dsi0_csi1_i2c {
 	#address-cells = <1>;
 	#size-cells = <0>;
 
