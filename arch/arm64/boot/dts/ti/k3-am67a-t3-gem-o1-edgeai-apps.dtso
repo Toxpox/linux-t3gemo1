@@ -2,13 +2,24 @@
 /*
  * Vision-apps: device-tree overlay
  *
+ * Adapted for the T3 Gemstone O1 (AM67A / J722S) from the TI vision-apps
+ * carve-out layout. It disables the base reserved-memory nodes and replaces
+ * them with the vision-apps regions at the same addresses.
+ *
  * Copyright (C) 2019 Texas Instruments Incorporated - http://www.ti.com/
  */
 
-#include <dt-bindings/soc/ti,sci_pm_domain.h>
-
 /dts-v1/;
 /plugin/;
+
+/*
+ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
+ */
+&{/chosen} {
+	overlays {
+		k3-am67a-t3-gem-o1-edgeai-apps.kernel = __TIMESTAMP__;
+	};
+};
 
 &mcu_r5fss0_core0_memory_region {
 	status = "disabled";
