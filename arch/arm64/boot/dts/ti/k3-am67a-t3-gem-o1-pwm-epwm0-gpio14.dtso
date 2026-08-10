@@ -24,13 +24,14 @@
 	};
 };
 
+/*
+ * hat_08_pwm is defined in k3-am67a-t3-gem-o1-pinmux.dtsi and is part of the
+ * base DTB, so it is only referenced below, never redefined. Redefining a base
+ * pin group from an overlay merges into it and silently overrides
+ * pinctrl-single,pins, which would make the pinmux.dtsi definition dead.
+ * main_uart1_pins_rx_only has no base counterpart, so it stays here.
+ */
 &main_pmx0 {
-	hat_08_pwm: hat-08-pwm-pins {
-		pinctrl-single,pins = <
-			J722S_IOPAD(0x1B0, PIN_OUTPUT, 6) /* (F24) MCASP0_ACLKR.EHRPWM0_B */
-		>;
-	};
-
 	main_uart1_pins_rx_only: main-uart1-pins-rx-only {
 		pinctrl-single,pins = <
 			J722S_IOPAD(0x01ac, PIN_INPUT, 2) /* (C27) MCASP0_AFSR.UART1_RXD */

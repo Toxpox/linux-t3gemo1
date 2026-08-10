@@ -22,14 +22,12 @@
 	};
 };
 
-&main_pmx0 {
-	hat_32_pwm_ecap: hat-32-pwm-ecap-pins {
-		pinctrl-single,pins = <
-			J722S_IOPAD(0x1B8, PIN_OUTPUT, 3) /* (C20) SPI0_CS1.ECAP0_IN_APWM_OUT */
-		>;
-	};
-};
-
+/*
+ * hat_32_pwm_ecap is defined in k3-am67a-t3-gem-o1-pinmux.dtsi and is part of
+ * the base DTB, so reference it instead of redefining it here. Redefining a
+ * base pin group from an overlay merges into it and silently overrides
+ * pinctrl-single,pins, which would make the pinmux.dtsi definition dead.
+ */
 &ecap0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&hat_32_pwm_ecap>;

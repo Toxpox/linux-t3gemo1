@@ -22,14 +22,12 @@
 	};
 };
 
-&main_pmx0 {
-	hat_33_pwm: hat-33-pwm-pins {
-		pinctrl-single,pins = <
-			J722S_IOPAD(0x1C0, PIN_OUTPUT, 2) /* (E19) SPI0_D0.EHRPWM1_B */
-		>;
-	};
-};
-
+/*
+ * hat_33_pwm is defined in k3-am67a-t3-gem-o1-pinmux.dtsi and is part of the
+ * base DTB, so reference it instead of redefining it here. Redefining a base
+ * pin group from an overlay merges into it and silently overrides
+ * pinctrl-single,pins, which would make the pinmux.dtsi definition dead.
+ */
 &epwm1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&hat_33_pwm>;
