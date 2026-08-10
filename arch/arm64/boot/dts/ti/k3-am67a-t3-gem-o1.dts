@@ -1145,7 +1145,11 @@ csi0_i2c: &main_i2c2 {
 };
 
 &dphy_tx0 {
-	status = "okay";
+	/*
+	 * Left disabled in the base DTS: its only consumer, dsi0, is disabled
+	 * here too. All 16 DSI panel overlays enable both nodes themselves.
+	 */
+	status = "disabled";
 };
 
 &dsi0 {
