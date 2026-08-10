@@ -258,9 +258,15 @@
 	};
 
 	transceiver0: can-phy0 {
-		compatible = "ti,tcan1042";
+		/*
+		 * TCAN1462-Q1, pin-compatible with TCAN1042-Q1 per its
+		 * datasheet (SLLSFF2B, "3 Description"), which is what
+		 * phy-can-transceiver binds against.
+		 */
+		compatible = "ti,tcan1462", "ti,tcan1042";
 		#phy-cells = <0>;
-		max-bitrate = <5000000>;
+		/* TCAN1462-Q1 does classical CAN and CAN FD up to 8 Mbps. */
+		max-bitrate = <8000000>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&mcan0_gpio_pins_default>;
 		standby-gpios = <&main_gpio0 13 GPIO_ACTIVE_LOW>;
