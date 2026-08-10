@@ -2,6 +2,11 @@
 /*
  * DT Overlay to use GPIO6 (PWM0) within the expansion header for EPWM1 (pwmchip5).
  *
+ * WARNING: do not load together with k3-am67a-t3-gem-o1-pwm-epwm1-gpio13.dtso.
+ * Both set &epwm1's pinctrl-0, which is single valued, so the one applied last
+ * silently wins and the other pad is never muxed - with no error anywhere. Use
+ * k3-am67a-t3-gem-o1-pwm-epwm1-gpio6-gpio13.dtso to get both outputs.
+ *
  * Copyright (C) 2023 Texas Instruments Incorporated - https://www.ti.com/
  */
 
