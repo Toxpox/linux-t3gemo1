@@ -690,7 +690,6 @@
 
 &main_gpio0 {
 	status = "okay";
-	pinctrl-names = "default";
 	gpio-line-names = "", "", "", "BT_EN", "", /* 0-4 */
 			  "", "", "", "", "", /* 5-9 */
 			  "", "", "", "", "", /* 10-14 */
@@ -704,7 +703,6 @@
 
 &main_gpio1 {
 	status = "okay";
-	pinctrl-names = "default";
 	gpio-line-names = "", "", "", "", "", /* 0-4 */
 			  "", "", "GPIO16", "GPIO17", "GPIO21", /* 5-9 */
 			  "GPIO20", "GPIO18", "GPIO19", "GPIO15", "GPIO14", /* 10-14 */
