@@ -1391,6 +1391,19 @@ csi0_i2c: &main_i2c2 {
 	rx-num-evt = <32>;
 };
 
+/* Timers are used by Remoteproc firmware */
+&main_timer0 {
+	status = "reserved";
+};
+
+&main_timer1 {
+	status = "reserved";
+};
+
+&main_timer2 {
+	status = "reserved";
+};
+
 &mcu_rti0 {
 	assigned-clock-parents = <&k3_clks 131 4>;
 };
