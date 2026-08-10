@@ -2,6 +2,16 @@
 /*
  * DT Overlay to use GPIO24 (TX) and GPIO7 (RX) within the expansion header for WKUP_UART0 (ttyS0).
  *
+ * WARNING: WKUP_UART0 is reserved for the Device Manager firmware in the base
+ * device tree. Loading this overlay takes the port away from DM and disables
+ * the DM firmware console.
+ *
+ * WARNING: mutually exclusive with k3-am67a-t3-gem-o1-spidev0-2cs.dtso. Both
+ * claim MCU pad 0x0024 (ball B3, HAT pin 26 / GPIO7): here as WKUP_UART0_RXD,
+ * there as MCU_SPI0_CS2. Loading both makes the second consumer fail with
+ * -EBUSY in pinmux_request_pin(). Use spidev0-1cs.dtso instead if ttyS0 is
+ * needed alongside a HAT spidev.
+ *
  * Copyright (C) 2025 T3 Foundation - https://www.t3vakfi.org/
  */
 
@@ -20,17 +30,15 @@
 	};
 };
 
-&main_pmx0 {
-    hat_18_hat_26_ttys0: hat-18-hat-26-ttys0 {
-		pinctrl-single,pins = <
-			J722S_MCU_IOPAD(0x028, PIN_OUTPUT, 0) /* (C8) WKUP_UART0_TXD */
-			J722S_MCU_IOPAD(0x024, PIN_INPUT, 0) /* (B3) WKUP_UART0_RXD */
-		>;
-    };
-};
-
+/*
+ * The WKUP_UART0 pads live in the MCU pinctrl domain (mcu_pmx0, pinctrl@4084000),
+ * not in main_pmx0 (pinctrl@f4000). J722S_IOPAD() and J722S_MCU_IOPAD() are
+ * identical macros - only the parent controller selects the domain. The pin
+ * groups are already defined in k3-am67a-t3-gem-o1-pinmux.dtsi under &mcu_pmx0,
+ * so reference them instead of redefining them in the wrong domain.
+ */
 &wkup_uart0 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&hat_18_hat_26_ttys0>;
+	pinctrl-0 = <&hat_18_wkup_uart0_txd>, <&hat_26_wkup_uart0_rxd>;
 	status = "okay";
 };

@@ -2,6 +2,12 @@
 /*
  * DT Overlay to use GPIO8 (CS0) and GPIO7 (CS2) within the expansion header for MCU_SPI0 (spidev0).
  *
+ * WARNING: mutually exclusive with k3-am67a-t3-gem-o1-uart-ttys0.dtso. Both
+ * claim MCU pad 0x0024 (ball B3, HAT pin 26 / GPIO7): here as MCU_SPI0_CS2,
+ * there as WKUP_UART0_RXD. Loading both makes the second consumer fail with
+ * -EBUSY in pinmux_request_pin(). Use spidev0-1cs.dtso instead if ttyS0 is
+ * needed at the same time.
+ *
  * Copyright (C) 2025 T3 Foundation - https://www.t3vakfi.org/
  */
 
