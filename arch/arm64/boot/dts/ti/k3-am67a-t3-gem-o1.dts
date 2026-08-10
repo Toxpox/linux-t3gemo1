@@ -894,12 +894,13 @@
 
 	pressure@1 {
 		/*
-		 * ST LPS22DF: fc(SPC) max 10 MHz; the datasheet recommends
-		 * limiting the SPI clock to 8 MHz for ODR <= 50 Hz.
+		 * ST LPS22DFTR, confirmed on the board (WHO_AM_I = 0xb4).
+		 * fc(SPC) max 10 MHz; the datasheet recommends limiting the
+		 * SPI clock to 8 MHz for ODR <= 50 Hz.
 		 */
-		spi-max-frequency = <8000000>;
+		compatible = "st,lps22df";
 		reg = <1>;
-		compatible = "bosch,bmp390-spidev";
+		spi-max-frequency = <8000000>;
 	};
 
 	imu@3 {
