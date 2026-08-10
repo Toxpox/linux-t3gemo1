@@ -19,10 +19,10 @@
 &{/chosen} {
 	overlays {
 		k3-am67a-t3-gem-o1-pwm-epwm0-gpio5-gpio14.kernel = __TIMESTAMP__;
-		hat-29.23000000.pwm = "k3-am67a-t3-gem-o1-pwm-epwm0-gpio5.23000000.0.GPIO5";
-		gpio5.23000000.pwm = "k3-am67a-t3-gem-o1-pwm-epwm0-gpio5.23000000.0.GPIO5";
-		hat-08.23000000.pwm = "k3-am67a-t3-gem-o1-pwm-epwm0-gpio14.23000000.1.GPIO14";
-		gpio14.23000000.pwm = "k3-am67a-t3-gem-o1-pwm-epwm0-gpio14.23000000.1.GPIO14";
+		hat-29.23000000.pwm = "k3-am67a-t3-gem-o1-pwm-epwm0-gpio5-gpio14.23000000.0.GPIO5";
+		gpio5.23000000.pwm = "k3-am67a-t3-gem-o1-pwm-epwm0-gpio5-gpio14.23000000.0.GPIO5";
+		hat-08.23000000.pwm = "k3-am67a-t3-gem-o1-pwm-epwm0-gpio5-gpio14.23000000.1.GPIO14";
+		gpio14.23000000.pwm = "k3-am67a-t3-gem-o1-pwm-epwm0-gpio5-gpio14.23000000.1.GPIO14";
 	};
 };
 
