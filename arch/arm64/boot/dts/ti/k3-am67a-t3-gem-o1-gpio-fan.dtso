@@ -7,9 +7,13 @@
  * available to the header while this overlay is loaded. Nothing in the tree
  * references hat_40_*, so the takeover produces no warning at DT or runtime.
  *
- * NOTE: the base DTS drives the fan from a different ball (F26, pad 0x0124,
- * EHRPWM2_A). Verify that B25 is routed to the fan control input on the target
- * board revision before deploying this overlay.
+ * WARNING: the base DTS drives the fan from a different ball (F26, pad 0x0124,
+ * EHRPWM2_A). Measured on a T3 Gemstone O1 Obsidian board: with this overlay
+ * loaded the thermal cooling device does become "gpio-fan" and the base pwm-fan
+ * does disappear, as intended - but the fan stops turning. It is wired to the
+ * F26 connector and nothing is connected to B25, so no one drives it. Deploy
+ * this overlay only on a variant whose fan control input is actually routed to
+ * B25; on this board it leaves the fan uncontrolled.
  *
  * NOTE: FAN_TACH (pad 0x01d0) is deliberately left unclaimed. The gpio-fan
  * binding exposes it through alarm-gpios, but the signal polarity has not been
