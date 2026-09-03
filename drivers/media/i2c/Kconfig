@@ -51,6 +51,15 @@ config VIDEO_ALVIUM_CSI2
 	  To compile this driver as a module, choose M here: the
 	  module will be called alvium-csi2.
 
+config VIDEO_ARDUCAM_PIVARIETY
+	tristate "Arducam Pivariety camera sensor support"
+	help
+	  This is a Video4Linux2 sensor driver for Arducam
+	  Pivariety camera modules connected through MIPI CSI-2.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called arducam-pivariety.
+
 config VIDEO_AR0521
 	tristate "ON Semiconductor AR0521 sensor support"
 	help
